@@ -1,0 +1,106 @@
+{
+  "name": "emails autmation",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "a2214abc-83b5-4c71-a358-ccceef1d8b86",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1FuGYZ9ocqjfSjdllqbGqJ0nOMIdCvOboG69C-9jmVEo",
+          "mode": "list",
+          "cachedResultName": "DataSheet",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FuGYZ9ocqjfSjdllqbGqJ0nOMIdCvOboG69C-9jmVEo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Sheet1",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        192,
+        0
+      ],
+      "id": "15b12511-6fad-473a-9da9-26aceeda99fe",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "tTUQyWdUVu2POmRk",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "PIAIC Test",
+        "message": "Hello",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        400,
+        0
+      ],
+      "id": "f59714c6-3546-425a-afa8-488453a91ab6",
+      "name": "Send a message",
+      "webhookId": "7e91a160-40b6-4bef-b625-d63fa0b16b9f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "DLQNHe30xF1HAlue",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f0477e8a-52b0-4b54-ab99-9d7015647a9f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "18b279c369a0e14170456b1e405bb309e246a10ec828a1bddb12077d2bbc8090"
+  },
+  "id": "6UhRj6CqsWGsiIps",
+  "tags": []
+}
