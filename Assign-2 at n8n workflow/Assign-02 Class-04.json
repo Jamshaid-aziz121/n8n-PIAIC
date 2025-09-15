@@ -1,0 +1,397 @@
+{
+  "name": "Assign-02 Class-04",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 18
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1456,
+        -256
+      ],
+      "id": "25fb28f0-f5ac-4076-a23f-ded4a1e190f8",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://internal.users.n8n.cloud/webhook/custom-erp",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Unique_ID",
+              "value": "e826506db057db309e8056843f78b3f7"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1248,
+        -256
+      ],
+      "id": "b3e35261-8ad0-45d6-9d22-e9017dcce252",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "11tfldquH94KLcBZ",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b2b45445-8727-4d94-9e4d-3ed7bec500a0",
+              "leftValue": "={{ $json.orderStatus }}",
+              "rightValue": "booked",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1056,
+        -256
+      ],
+      "id": "2575f0f5-ca63-4067-bdd8-d4b92b8944d6",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4c7dbaab-a3a4-4ed6-98e6-5c3a073d922d",
+              "name": "customerID",
+              "value": "={{ $json.customerID }}",
+              "type": "number"
+            },
+            {
+              "id": "c89c5114-aedf-4755-8df1-616c9c8f5363",
+              "name": "employeeName",
+              "value": "={{ $json.employeeName }}",
+              "type": "string"
+            },
+            {
+              "id": "66d802d5-94be-4c83-aa10-9d6dcae38808",
+              "name": "orderID",
+              "value": "={{ $json.orderID }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -848,
+        -320
+      ],
+      "id": "89e2ee4a-7125-4771-a52d-6da741b6e817",
+      "name": "Edit Fields",
+      "notes": "Data Transforming & manipulating"
+    },
+    {
+      "parameters": {
+        "jsCode": "let items = $input.all();\nlet total_orders = items.length;\nlet total_price = 0;\n\nfor (const item of items ){\n  total_price += item.json.orderPrice\n}\n\nreturn [{json:{total_price, total_orders}}]"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -832,
+        -128
+      ],
+      "id": "ea769ea4-c9e8-4742-8ab3-756693e76c05",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appLlE0eC5mqzL56G",
+          "mode": "list",
+          "cachedResultName": "Assign_2",
+          "cachedResultUrl": "https://airtable.com/appLlE0eC5mqzL56G"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblADrLXz8SHIydmY",
+          "mode": "list",
+          "cachedResultName": "Class-4",
+          "cachedResultUrl": "https://airtable.com/appLlE0eC5mqzL56G/tblADrLXz8SHIydmY"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "order_ID": "={{ $json.orderID }}",
+            "customer_Name": "={{ $json.employeeName }}"
+          },
+          "matchingColumns": [
+            "Name"
+          ],
+          "schema": [
+            {
+              "id": "order_ID",
+              "displayName": "order_ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "customer_Name",
+              "displayName": "customer_Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -480,
+        -320
+      ],
+      "id": "8c683d4f-69a9-47e8-97a3-5ba17f4880cd",
+      "name": "Create a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "AyQxqlIk8TjUNNdX",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e0e213c6-a14c-485b-85f0-bbd0cfa6abf4",
+              "leftValue": "={{ $json.employeeName }}",
+              "rightValue": "Mario",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -656,
+        -320
+      ],
+      "id": "34ff6010-c221-4888-b05d-16e5631b103d",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appP3s08uqSeKfU5l",
+          "mode": "list",
+          "cachedResultName": "Assign-2",
+          "cachedResultUrl": "https://airtable.com/appP3s08uqSeKfU5l"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblvc4rxZxwaNHr6M",
+          "mode": "list",
+          "cachedResultName": "Processing_orders",
+          "cachedResultUrl": "https://airtable.com/appP3s08uqSeKfU5l/tblvc4rxZxwaNHr6M"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Total_processing_orders": "={{ $json.total_orders }}",
+            "Total_price": "={{ $json.total_price }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Total_processing_orders",
+              "displayName": "Total_processing_orders",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Total_price",
+              "displayName": "Total_price",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -624,
+        -128
+      ],
+      "id": "985fa9be-0922-4809-b298-ac19bf43a60a",
+      "name": "Create a record1",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "AyQxqlIk8TjUNNdX",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Create a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Create a record1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "db9c10c6-8bec-4a79-918c-9def6dcccd59",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "eb673f83823cd4fe93b68a4364b4c1f3bddd7aa98205879217ed2becc17b9cbd"
+  },
+  "id": "E7GR32JckAkhTvDq",
+  "tags": []
+}

@@ -1,0 +1,239 @@
+{
+  "name": "Discord-assignments",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1824,
+        -912
+      ],
+      "id": "690e77cb-57df-4df3-a907-c0c051747e19",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6d0913d6-18de-49ba-87a9-de191bf082d2",
+              "name": "author.username",
+              "value": "={{ $json.author.username }}",
+              "type": "string"
+            },
+            {
+              "id": "12119b58-e9ac-451b-9cf8-3ad1eb9f4161",
+              "name": "author.id",
+              "value": "={{ $json.author.id }}",
+              "type": "number"
+            },
+            {
+              "id": "dedd3dfc-f115-427b-a017-0283c58e4961",
+              "name": "content",
+              "value": "={{ $json.content }}",
+              "type": "string"
+            },
+            {
+              "id": "7fb1d1e3-f3bd-4b39-bbe5-d57be5155464",
+              "name": "attachments",
+              "value": "={{ $json.attachments }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1456,
+        -912
+      ],
+      "id": "f1b5e6b4-66be-467b-bfaa-9077f7ddb9b2",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "getAll",
+        "guildId": {
+          "__rl": true,
+          "value": "1415704116549648474",
+          "mode": "list",
+          "cachedResultName": "Ai agent &  Robotics model's server",
+          "cachedResultUrl": "https://discord.com/channels/1415704116549648474"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "1416771827551961169",
+          "mode": "list",
+          "cachedResultName": "assignments76",
+          "cachedResultUrl": "https://discord.com/channels/1415704116549648474/1416771827551961169"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        -1632,
+        -912
+      ],
+      "id": "b3c8e3bb-8fe5-4f94-8cc6-c372fdaffc7b",
+      "name": "__CUSTOM_API_CALL__ message",
+      "webhookId": "1189f929-230f-4586-88fe-dfb63ad651f2",
+      "credentials": {
+        "discordBotApi": {
+          "id": "PcLcwBlobYgpNXsB",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appFOklVv5ptwuEJw",
+          "mode": "list",
+          "cachedResultName": "Base_Discord",
+          "cachedResultUrl": "https://airtable.com/appFOklVv5ptwuEJw"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblBW8dxuDCMKNHDA",
+          "mode": "list",
+          "cachedResultName": "Assignments_Report",
+          "cachedResultUrl": "https://airtable.com/appFOklVv5ptwuEJw/tblBW8dxuDCMKNHDA"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "std_ID": "={{ $json.author.id }}",
+            "std_name": "={{ $json.author.username }}",
+            "msg_Content": "={{ $json.content }}",
+            "assignments_Attachments": "={{ $json.attachments && $json.attachments.length > 0\n    ? $json.attachments[0].url\n    : 'N/A' }}\n"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "std_ID",
+              "displayName": "std_ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "std_name",
+              "displayName": "std_name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "msg_Content",
+              "displayName": "msg_Content",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "assignments_Attachments",
+              "displayName": "assignments_Attachments",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -1216,
+        -912
+      ],
+      "id": "63f69d03-6b4b-4ff5-9c2e-8f8111e35c3e",
+      "name": "Create a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "jRfgyPrgrsR56eXy",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "__CUSTOM_API_CALL__ message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "__CUSTOM_API_CALL__ message": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Create a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "dfd6d521-41f6-4c26-9f2e-7214b954a906",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "eb673f83823cd4fe93b68a4364b4c1f3bddd7aa98205879217ed2becc17b9cbd"
+  },
+  "id": "l5QzgBS9dqeZjVMK",
+  "tags": [
+    {
+      "name": "submission",
+      "id": "SqCgKa6OMp0VKjdG",
+      "createdAt": "2025-09-14T21:11:45.915Z",
+      "updatedAt": "2025-09-14T21:11:45.915Z"
+    }
+  ]
+}

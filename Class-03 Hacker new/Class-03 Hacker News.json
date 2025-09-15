@@ -1,0 +1,86 @@
+{
+  "name": "Class-03 Hacker News",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 1,
+              "triggerAtMinute": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -432,
+        -64
+      ],
+      "id": "1da35cbb-f412-4945-af45-d1e632137538",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "resource": "all",
+        "additionalFields": {
+          "keyword": "automation"
+        }
+      },
+      "type": "n8n-nodes-base.hackerNews",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        -64
+      ],
+      "id": "22eb82b2-00f5-485b-a98e-17a2fc5c2115",
+      "name": "Hacker News",
+      "notesInFlow": true,
+      "notes": "Hacker New"
+    },
+    {
+      "parameters": {
+        "content": "## I'm Jamshaid \n",
+        "height": 80,
+        "width": 176,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -944,
+        -224
+      ],
+      "id": "7774ea2d-38f2-450f-bff1-c2a0c5a02433",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Hacker News",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "w8zbNR4SWAzZnRvc",
+    "timeSavedPerExecution": 0
+  },
+  "versionId": "870b3994-9a20-4cc2-ae59-963556e880c0",
+  "meta": {
+    "instanceId": "eb673f83823cd4fe93b68a4364b4c1f3bddd7aa98205879217ed2becc17b9cbd"
+  },
+  "id": "w8zbNR4SWAzZnRvc",
+  "tags": []
+}
